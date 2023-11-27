@@ -11,6 +11,7 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
@@ -134,7 +135,6 @@ const Search = () => {
         forecastData,
       });
 
-      // Exibir notificação
       await showNotification();
     } catch (error) {
       console.error('Erro ao obter informações meteorológicas:', error);
@@ -142,6 +142,26 @@ const Search = () => {
       setLoading(false);
       setFlatListVisibility(false);
     }
+  };
+
+  const showNotification = async () => {
+    const channelId = await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
+    });
+
+    const notification = await notifee.buildNotification({
+      title: 'iWeather',
+      body: 'Como está o clima Hoje?',
+      android: {
+        channelId,
+        pressAction: {
+          id: 'default',
+        },
+      },
+    });
+
+    await notifee.displayNotification(notification);
   };
 
   return (
