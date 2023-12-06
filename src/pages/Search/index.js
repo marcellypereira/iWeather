@@ -11,11 +11,13 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
-  Platform,
 } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import notifee from '@notifee/react-native';
+import notifee, {
+  AndroidImportance,
+  AndroidVisibility,
+} from '@notifee/react-native';
 
 const Search = () => {
   const navigation = useNavigation();
@@ -32,6 +34,36 @@ const Search = () => {
   const apiKeyWeather = '0ac426096c1052bd93caf48f951447f2';
 
   let searchTimeout;
+
+  const showNotification = async () => {
+    // Request permissions (required for iOS)
+    await notifee.requestPermission();
+
+    // Create a channel (required for Android)
+    const channelId = await notifee.createChannel({
+      id: 'rain-channel',
+      name: 'Default Channel',
+      importance: AndroidImportance.HIGH,
+      visibility: AndroidVisibility.PUBLIC,
+    });
+
+    // Display a notification
+    await notifee.displayNotification({
+      title: 'Olha a chuva ⛈️',
+      body: 'Vai cair um temporal ☔️',
+      android: {
+        channelId: channelId,
+        importance: AndroidImportance.HIGH,
+        visibility: AndroidVisibility.PUBLIC,
+        // The icon to display in the notification (option
+        smallIcon: 'ic_launcher', // optional, defaults to 'ic_launcher'.
+        // pressAction is needed if you want the notification to open the app when pressed
+        pressAction: {
+          id: 'default',
+        },
+      },
+    });
+  };
 
   const getPlacePredictions = async (text) => {
     setLoading(true);
@@ -129,12 +161,12 @@ const Search = () => {
 
       setSelectedLocation(item.description);
       setForecastData(forecastData);
+
       navigation.navigate('Dashboard', {
         weatherData,
         selectedLocation: item.description,
         forecastData,
       });
-
       await showNotification();
     } catch (error) {
       console.error('Erro ao obter informações meteorológicas:', error);
@@ -142,26 +174,6 @@ const Search = () => {
       setLoading(false);
       setFlatListVisibility(false);
     }
-  };
-
-  const showNotification = async () => {
-    const channelId = await notifee.createChannel({
-      id: 'default',
-      name: 'Default Channel',
-    });
-
-    const notification = await notifee.buildNotification({
-      title: 'iWeather',
-      body: 'Como está o clima Hoje?',
-      android: {
-        channelId,
-        pressAction: {
-          id: 'default',
-        },
-      },
-    });
-
-    await notifee.displayNotification(notification);
   };
 
   return (
@@ -174,7 +186,7 @@ const Search = () => {
         <View style={styles.logoContainer}>
           <Image source={require('../../../assets/logo.png')} />
         </View>
-        <View style={styles.LogoInput}>
+        <View style={styles.logoInput}>
           <View style={styles.boxInput}>
             <View style={styles.boxTitle}>
               <Text style={styles.titleWhite}>
@@ -235,7 +247,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
-  LogoInput: {
+  logoInput: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
