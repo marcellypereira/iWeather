@@ -12,12 +12,12 @@ import {
   StatusBar,
   StyleSheet,
 } from 'react-native';
-import axios from 'axios';
+
 import { useNavigation } from '@react-navigation/native';
-import notifee, {
-  AndroidImportance,
-  AndroidVisibility,
-} from '@notifee/react-native';
+// import notifee, {
+//   AndroidImportance,
+//   AndroidVisibility,
+// } from '@notifee/react-native';
 
 const Search = () => {
   const navigation = useNavigation();
@@ -35,7 +35,7 @@ const Search = () => {
 
   let searchTimeout;
 
-  const showNotification = async () => {
+  /* const showNotification = async () => {
     // Request permissions (required for iOS)
     await notifee.requestPermission();
 
@@ -64,7 +64,7 @@ const Search = () => {
       },
     });
   };
-
+*/
   const getPlacePredictions = async (text) => {
     setLoading(true);
 
@@ -74,10 +74,10 @@ const Search = () => {
       const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${text}&key=${apiKeyPlaces}&language=pt-BR`;
 
       try {
-        const response = await axios.get(url);
-        const predictionsData = response.data.predictions;
-        setPredictions(predictionsData);
-        setFlatListVisibility(!!text && predictionsData.length > 0);
+        const response = await fetch(url);
+        const predictionsData = await response.json();
+        setPredictions(predictionsData.predictions);
+        setFlatListVisibility(!!text && predictionsData.predictions.length > 0);
       } catch (error) {
         console.error('Erro ao obter previsões de lugares:', error);
       } finally {
@@ -90,30 +90,24 @@ const Search = () => {
     const placeDetailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${apiKeyPlaces}`;
 
     try {
-      const placeDetailsResponse = await axios.get(placeDetailsUrl);
-      const result = placeDetailsResponse.data.result;
+      const placeDetailsResponse = await fetch(placeDetailsUrl);
+      const result = await placeDetailsResponse.json();
 
-      if (result && result.geometry && result.geometry.location) {
-        const { lat, lng } = result.geometry.location;
+      if (result && result.result && result.result.geometry && result.result.geometry.location) {
+        const { lat, lng } = result.result.geometry.location;
         const weatherUrl = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${apiKeyWeather}&units=metric`;
 
-        const weatherResponse = await axios.get(weatherUrl);
-        const weatherData = weatherResponse.data;
+        const weatherResponse = await fetch(weatherUrl);
+        const weatherData = await weatherResponse.json();
 
         if (weatherData && weatherData.weather && weatherData.main) {
           console.log('Resposta da API de Tempo:', weatherData);
           return weatherData;
         } else {
-          console.error(
-            'Resposta da API de Tempo não possui a estrutura esperada:',
-            weatherData,
-          );
+          console.error('Resposta da API de Tempo não possui a estrutura esperada:', weatherData);
         }
       } else {
-        console.error(
-          'Resposta da API de detalhes do lugar não possui a estrutura esperada:',
-          result,
-        );
+        console.error('Resposta da API de detalhes do lugar não possui a estrutura esperada:', result);
       }
     } catch (error) {
       console.error('Erro ao obter informações meteorológicas:', error);
@@ -125,21 +119,16 @@ const Search = () => {
     const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKeyWeather}&units=metric`;
 
     try {
-      const forecastResponse = await axios.get(forecastUrl);
-      const forecastData = forecastResponse.data.list;
+      const forecastResponse = await fetch(forecastUrl);
+      const forecastData = await forecastResponse.json();
 
-      if (forecastData && forecastData.length > 0) {
-        const next4DaysData = forecastData
-          .filter((item, index) => index % 8 === 0)
-          .slice(0, 4);
+      if (forecastData && forecastData.list && forecastData.list.length > 0) {
+        const next4DaysData = forecastData.list.filter((item, index) => index % 8 === 0).slice(0, 4);
 
         console.log('Resposta da API de Previsão:', next4DaysData);
         return next4DaysData;
       } else {
-        console.error(
-          'Resposta da API de Previsão não possui dados válidos:',
-          forecastData,
-        );
+        console.error('Resposta da API de Previsão não possui dados válidos:', forecastData);
       }
     } catch (error) {
       console.error('Erro ao obter informações de previsão:', error);
@@ -167,7 +156,7 @@ const Search = () => {
         selectedLocation: item.description,
         forecastData,
       });
-      await showNotification();
+      // await showNotification();
     } catch (error) {
       console.error('Erro ao obter informações meteorológicas:', error);
     } finally {
