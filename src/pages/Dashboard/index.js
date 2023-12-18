@@ -22,97 +22,37 @@ const Dashboard = ({ route }) => {
   };
 
   const getWeatherImage = () => {
-    const weatherCondition = weatherData.weather[0].main.toLowerCase();
-    const isNight = weatherData.weather[0].icon.includes('n');
+    const weatherCondition = weatherData.weather[0]?.main.toLowerCase();
+    const isNight = weatherData.weather[0]?.icon.includes('n');
 
-    switch (weatherCondition) {
-      case 'clear':
-        return isNight
-          ? require('../../../assets/clear-night.png')
-          : require('../../../assets/clear-day.png');
-      case 'rain':
-        return isNight
-          ? require('../../../assets/rain-night.png')
-          : require('../../../assets/rain-day.png');
-      case 'clouds':
-        return isNight
-          ? require('../../../assets/cloudy-night.png')
-          : require('../../../assets/cloudy-day.png');
-      case 'few clouds':
-        return isNight
-          ? require('../../../assets/fewClouds-night.png')
-          : require('../../../assets/fewClouds-day.png');
-      case 'storm':
-        return isNight
-          ? require('../../../assets/storm-night.png')
-          : require('../../../assets/storm-day.png');
-      default:
-        return require('../../../assets/clear-day.png');
-    }
+    const imagePaths = {
+      clear: isNight ? require('../../../assets/clear-night.png') : require('../../../assets/clear-day.png'),
+      rain: isNight ? require('../../../assets/rain-night.png') : require('../../../assets/rain-day.png'),
+      clouds: isNight ? require('../../../assets/cloudy-night.png') : require('../../../assets/cloudy-day.png'),
+      'few clouds': isNight ? require('../../../assets/fewClouds-night.png') : require('../../../assets/fewClouds-day.png'),
+      storm: isNight ? require('../../../assets/storm-night.png') : require('../../../assets/storm-day.png'),
+    };
+
+    return imagePaths[weatherCondition] || require('../../../assets/clear-day.png');
   };
 
-  const getWeatherIconForDay = (weatherCondition) => {
-    const isNight = weatherCondition.icon.includes('n');
+  const getWeatherIcon = (weatherCondition) => {
+    const isNight = weatherCondition?.icon.includes('n');
+    const iconPaths = {
+      clear: isNight ? require('../../../assets/IconClearNight.png') : require('../../../assets/IconClearDay.png'),
+      rain: isNight ? require('../../../assets/IconRainNight.png') : require('../../../assets/IconRainDay.png'),
+      clouds: isNight ? require('../../../assets/IconCloudyNight.png') : require('../../../assets/IconCloudyDay.png'),
+      'few clouds': isNight ? require('../../../assets/IconFewcloudsNight.png') : require('../../../assets/IconFewcloudsDay.png'),
+      storm: isNight ? require('../../../assets/IconStormNight.png') : require('../../../assets/IconStormDay.png'),
+    };
 
-    switch (weatherCondition.main.toLowerCase()) {
-      case 'clear':
-        return isNight
-          ? require('../../../assets/IconClearNight.png')
-          : require('../../../assets/IconClearDay.png');
-      case 'rain':
-        return isNight
-          ? require('../../../assets/IconRainNight.png')
-          : require('../../../assets/IconRainDay.png');
-      case 'clouds':
-        return isNight
-          ? require('../../../assets/IconCloudyNight.png')
-          : require('../../../assets/IconCloudyDay.png');
-      case 'few clouds':
-        return isNight
-          ? require('../../../assets/IconFewcloudsNight.png')
-          : require('../../../assets/IconFewcloudsDay.png');
-      case 'storm':
-        return isNight
-          ? require('../../../assets/IconStormNight.png')
-          : require('../../../assets/IconStormDay.png');
-      default:
-        return require('../../../assets/IconClearDay.png');
-    }
-  };
-  const getWeatherIcon = () => {
-    const weatherCondition = weatherData.weather[0].main.toLowerCase();
-    const isNight = weatherData.weather[0].icon.includes('n');
-
-    switch (weatherCondition) {
-      case 'clear':
-        return isNight
-          ? require('../../../assets/IconClearNight.png')
-          : require('../../../assets/IconClearDay.png');
-      case 'rain':
-        return isNight
-          ? require('../../../assets/IconRainNight.png')
-          : require('../../../assets/IconRainDay.png');
-      case 'clouds':
-        return isNight
-          ? require('../../../assets/IconCloudyNight.png')
-          : require('../../../assets/IconCloudyDay.png');
-      case 'few clouds':
-        return isNight
-          ? require('../../../assets/IconFewcloudsNight.png')
-          : require('../../../assets/IconFewcloudsDay.png');
-      case 'storm':
-        return isNight
-          ? require('../../../assets/IconStormNight.png')
-          : require('../../../assets/IconStormDay.png');
-      default:
-        return require('../../../assets/IconClearDay.png');
-    }
+    return iconPaths[weatherCondition?.main.toLowerCase()] || require('../../../assets/IconClearDay.png');
   };
 
   const getFeelsLikeRange = () => {
-    const feelsLikeHigh = Math.round(weatherData.main.feels_like);
-    const feelsLikeLow = Math.round(weatherData.main.feels_like - 2);
-    return `${feelsLikeLow}°c / ${feelsLikeHigh}°c`;
+    const feelsLikeHigh = Math.round(weatherData.main?.feels_like);
+    const feelsLikeLow = Math.round((weatherData.main?.feels_like || 0) - 2);
+    return `${feelsLikeLow}°C / ${feelsLikeHigh}°C`;
   };
 
   return (
@@ -132,15 +72,15 @@ const Dashboard = ({ route }) => {
             <View style={styles.description}>
               <View style={styles.descriptionTxt}>
                 <Text style={styles.temperatura}>
-                  {Math.round(weatherData.main.temp)}°c
+                  {Math.round(weatherData.main?.temp)}°C
                 </Text>
-                <Text style={styles.sensação}>{getFeelsLikeRange()}</Text>
+                <Text style={styles.sensacao}>{getFeelsLikeRange()}</Text>
                 <Text style={styles.tempo}>
-                  {weatherData.weather[0].description}
+                  {weatherData.weather[0]?.description}
                 </Text>
               </View>
               <View style={styles.iconTemp}>
-                <Image style={styles.icons} source={getWeatherIcon()} />
+                <Image style={styles.icons} source={getWeatherIcon(weatherData.weather[0])} />
               </View>
             </View>
           </View>
@@ -152,7 +92,7 @@ const Dashboard = ({ route }) => {
           {
             icon: require('../../../assets/Icon-sensacao.png'),
             title: 'Sensação Térmica',
-            value: `${Math.round(weatherData.main.feels_like)}°C`,
+            value: `${Math.round(weatherData.main?.feels_like)}°C`,
           },
           {
             icon: require('../../../assets/Icon-probabilidade.png'),
@@ -162,9 +102,7 @@ const Dashboard = ({ route }) => {
           {
             icon: require('../../../assets/vento.png'),
             title: 'Velocidade do Vento',
-            value: weatherData.wind
-              ? `${Math.round(weatherData.wind.speed)} km/h`
-              : 'N/A',
+            value: weatherData.wind ? `${Math.round(weatherData.wind.speed)} km/h` : 'N/A',
           },
           {
             icon: require('../../../assets/Icon-umidade.png'),
@@ -199,15 +137,15 @@ const Dashboard = ({ route }) => {
                   <View>
                     <Image
                       style={styles.iconsProb}
-                      source={getWeatherIconForDay(day.weather[0])}
+                      source={getWeatherIcon(day.weather[0])}
                     />
                   </View>
                   <View style={styles.temperaturas}>
                     <Text style={styles.temperaturaMax}>
-                      {Math.round(day.main.temp_max)}°C
+                      {Math.round(day.main?.temp_max)}°C
                     </Text>
                     <Text style={styles.temperaturaMin}>
-                      {Math.round(day.main.temp_min)}°C
+                      {Math.round(day.main?.temp_min)}°C
                     </Text>
                   </View>
                 </View>
@@ -266,7 +204,7 @@ const styles = StyleSheet.create({
     fontSize: 50,
     fontWeight: 'bold',
   },
-  sensação: {
+  sensacao: {
     color: '#fff',
     fontSize: 18,
     fontWeight: '500',
