@@ -34,14 +34,10 @@ O projeto envolve a criação de um sistema de tickets para fins de aprendizagem
 * [Javascript](https://www.javascript.com/)
 * [Node.js](https://nodejs.org/en/)
 * [React Native](https://reactnative.dev/)
-* [Expo](https://docs.expo.dev/get-started/installation/)
-
-### :construction: Requisitos
-- Qualquer sistema operacional com [Expo](https://docs.expo.dev/get-started/installation/) instalado.
 
 ## :bricks: Instalação
 
-Este projeto utiliza [Node.js](https://nodejs.org/en/) e [npm](https://www.npmjs.com/), você precisará deles para construir suas dependências.
+Este projeto utiliza [Node.js](https://nodejs.org/en/) e [Npm](https://www.npmjs.com/), você precisará deles para construir suas dependências.
 
 
 Clonar este repositório de projeto:
@@ -67,7 +63,7 @@ $ yarn install
 
 ## :arrow_forward: Execução
 
-Execute o seguinte comando para instalar o expo Go do próprio projeto e rodar:
+Execute o seguinte comando para rodar:
 
 ```bash
 $ yarn android
