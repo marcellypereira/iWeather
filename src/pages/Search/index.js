@@ -9,15 +9,10 @@ import {
   ImageBackground,
   Image,
   SafeAreaView,
-  StatusBar,
-  StyleSheet,
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
-// import notifee, {
-//   AndroidImportance,
-//   AndroidVisibility,
-// } from '@notifee/react-native';
+import { styles } from './styles';
 
 const Search = () => {
   const navigation = useNavigation();
@@ -35,36 +30,6 @@ const Search = () => {
 
   let searchTimeout;
 
-  /* const showNotification = async () => {
-    // Request permissions (required for iOS)
-    await notifee.requestPermission();
-
-    // Create a channel (required for Android)
-    const channelId = await notifee.createChannel({
-      id: 'rain-channel',
-      name: 'Default Channel',
-      importance: AndroidImportance.HIGH,
-      visibility: AndroidVisibility.PUBLIC,
-    });
-
-    // Display a notification
-    await notifee.displayNotification({
-      title: 'Olha a chuva ⛈️',
-      body: 'Vai cair um temporal ☔️',
-      android: {
-        channelId: channelId,
-        importance: AndroidImportance.HIGH,
-        visibility: AndroidVisibility.PUBLIC,
-        // The icon to display in the notification (option
-        smallIcon: 'ic_launcher', // optional, defaults to 'ic_launcher'.
-        // pressAction is needed if you want the notification to open the app when pressed
-        pressAction: {
-          id: 'default',
-        },
-      },
-    });
-  };
-*/
   const getPlacePredictions = async (text) => {
     setLoading(true);
 
@@ -143,10 +108,7 @@ const Search = () => {
 
     try {
       const weatherData = await getWeatherInfo(item.place_id);
-      const forecastData = await getWeatherForecast(
-        weatherData.coord.lat,
-        weatherData.coord.lon,
-      );
+      const forecastData = await getWeatherForecast(weatherData.coord.lat, weatherData.coord.lon);
 
       setSelectedLocation(item.description);
       setForecastData(forecastData);
@@ -156,7 +118,6 @@ const Search = () => {
         selectedLocation: item.description,
         forecastData,
       });
-      // await showNotification();
     } catch (error) {
       console.error('Erro ao obter informações meteorológicas:', error);
     } finally {
@@ -204,94 +165,25 @@ const Search = () => {
 
           {loading && <ActivityIndicator size="large" color="blue" />}
 
-          {searchText !== '' &&
-            isFlatListVisible &&
-            !loading &&
-            predictions.length > 0 && (
-              <FlatList
-                style={styles.suggestionsList}
-                data={predictions.slice(0, 4)}
-                keyExtractor={(item) => item.place_id}
-                renderItem={({ item }) => (
-                  <TouchableOpacity
-                    style={styles.suggestionItem}
-                    onPress={() => handlePredictionSelection(item)}
-                  >
-                    <Text style={styles.txtList}>{item.description}</Text>
-                  </TouchableOpacity>
-                )}
-              />
-            )}
+          {searchText !== '' && isFlatListVisible && !loading && predictions.length > 0 && (
+            <FlatList
+              style={styles.suggestionsList}
+              data={predictions.slice(0, 4)}
+              keyExtractor={(item) => item.place_id}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  style={styles.suggestionItem}
+                  onPress={() => handlePredictionSelection(item)}
+                >
+                  <Text style={styles.txtList}>{item.description}</Text>
+                </TouchableOpacity>
+              )}
+            />
+          )}
         </View>
       </ImageBackground>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  backgroundImage: {
-    flex: 1,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-  },
-  logoInput: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  logoContainer: {
-    alignItems: 'center',
-    paddingTop: '15%',
-  },
-  boxInput: {
-    width: '80%',
-  },
-  boxTitle: {
-    alignItems: 'center',
-    marginBottom: '10%',
-  },
-  titleWhite: {
-    color: '#fff',
-    fontSize: 20,
-  },
-  titleBlue: {
-    color: '#8FB2F5',
-  },
-  subtitleWhite: {
-    color: '#fff',
-  },
-  input: {
-    height: 50,
-    paddingLeft: 10,
-    paddingRight: 10,
-    width: '100%',
-    backgroundColor: '#1C1C27',
-    borderRadius: 10,
-    color: 'rgba(250, 250, 250, 1)',
-    justifyContent: 'center',
-  },
-  suggestionsList: {
-    width: '80%',
-    maxHeight: 240,
-    borderWidth: 1,
-    borderColor: '#13131A',
-    borderRadius: 10,
-    top: 10,
-    backgroundColor: 'rgba(59, 59, 84, 1)',
-    alignSelf: 'center',
-  },
-  suggestionItem: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#13131A',
-    height: 60,
-    justifyContent: 'center',
-  },
-  txtList: {
-    color: 'rgba(250, 250, 250, 1)',
-  },
-});
 
 export default Search;
