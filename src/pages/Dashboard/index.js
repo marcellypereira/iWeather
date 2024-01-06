@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ImageBackground, Image, ScrollView } from 'react-native';
+import { View, Text, ImageBackground, Image, ScrollView, StatusBar } from 'react-native';
 import { format } from 'date-fns';
 import { pt } from 'date-fns/locale';
 import styles from './styles';
@@ -53,7 +53,7 @@ const Dashboard = ({ route }) => {
       <View style={styles.condicoesTempo}>
         <ImageBackground
           style={styles.backgroundImage}
-          source={getWeatherImage(weatherData.weather[0])}
+          source={getWeatherImage()}
           resizeMode="cover"
           borderRadius={10}
         >
@@ -67,7 +67,7 @@ const Dashboard = ({ route }) => {
                 <Text style={styles.temperatura}>
                   {Math.round(weatherData.main?.temp)}°C
                 </Text>
-                <Text style={styles.sensacao}>{getFeelsLikeRange(weatherData)}</Text>
+                <Text style={styles.sensacao}>{getFeelsLikeRange()}</Text>
                 <Text style={styles.tempo}>
                   {weatherData.weather[0]?.description}
                 </Text>

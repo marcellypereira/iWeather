@@ -1,8 +1,7 @@
-const apiKeyPlaces = 'AIzaSyAMI2xT6FiUa0FiP8XGA0TuVBhZLXW_6s8';
-const apiKeyWeather = '0ac426096c1052bd93caf48f951447f2';
+import { API_KEY_PLACES, API_KEY_WEATHER } from "@env";
 
 export const getPlacePredictions = async (text) => {
-  const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${text}&key=${apiKeyPlaces}&language=pt-BR`;
+  const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${text}&key=${API_KEY_PLACES}&language=pt-BR`;
 
   try {
     const response = await fetch(url);
@@ -15,7 +14,7 @@ export const getPlacePredictions = async (text) => {
 };
 
 export const getPlaceDetails = async (placeId) => {
-  const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${apiKeyPlaces}`;
+  const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${API_KEY_PLACES}`;
 
   try {
     const response = await fetch(url);
@@ -28,7 +27,7 @@ export const getPlaceDetails = async (placeId) => {
 };
 
 export const getWeatherInfo = async (lat, lon) => {
-  const url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKeyWeather}&units=metric`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY_WEATHER}&units=metric`;
 
   try {
     const response = await fetch(url);
@@ -41,7 +40,7 @@ export const getWeatherInfo = async (lat, lon) => {
 };
 
 export const getWeatherForecast = async (lat, lon) => {
-  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKeyWeather}&units=metric`;
+  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY_WEATHER}&units=metric`;
 
   try {
     const response = await fetch(url);

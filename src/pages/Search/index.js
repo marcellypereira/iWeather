@@ -13,7 +13,7 @@ import {
 
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
-import { getPlaceDetails, getWeatherInfo, getWeatherForecast, getPlacePredictions } from '../../../services/services'
+import { getPlaceDetails, getWeatherInfo, getWeatherForecast, getPlacePredictions } from '../../../Services/services'
 
 const Search = () => {
   const navigation = useNavigation();
