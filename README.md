@@ -28,7 +28,6 @@ Você pode acessar o layout do projeto no link abaixo:
 * Você precisa ter uma conta no [Figma](https://www.figma.com) para acessar o layout.
 
 
-O projeto envolve a criação de um sistema de tickets para fins de aprendizagem, utilizando React Native.
 ### :computer: Tecnologias
 
 * [Javascript](https://www.javascript.com/)
