@@ -4,9 +4,9 @@
  <div align="center">
   <table>
     <tr>
-      <td><img src="https://cdn.discordapp.com/attachments/1063226213092569251/1186343450476544020/Screenshot_20231218-132257_Expo_Go.jpg?ex=6592e76f&is=6580726f&hm=5fb52f632a8e6799d774b931a48cccd2b0b817d5922a2951ba10a107cbdf3a1d&" alt="Logo" /></td>
-      <td><img src="https://cdn.discordapp.com/attachments/1063226213092569251/1186343450770149467/Screenshot_20231218-132309_Expo_Go.jpg?ex=6592e76f&is=6580726f&hm=f2bd0a1685f61df30298c8045147de701dd21086de7f2ddd6e3d6bf4b4ffb653&" alt="Logo" /></td>
-       <td><img src="https://cdn.discordapp.com/attachments/1063226213092569251/1186343451067953243/Screenshot_20231218-132342_Expo_Go.jpg?ex=6592e76f&is=6580726f&hm=d9858e0e4817ce2738ecbe4912bca03dac2def3481887f789ccf382b3d655070&" alt="Logo" /></td>  
+      <td><img src="https://github.com/marcellypereira/iWeather/assets/116754560/c6ff508a-e133-454f-987d-72c07fbd6679" alt="Logo" /></td>
+      <td><img src="https://github.com/marcellypereira/iWeather/assets/116754560/c885a71b-8195-46ba-b633-5e17949e8fd4" alt="Logo" /></td>
+       <td><img src="https://github.com/marcellypereira/iWeather/assets/116754560/89d239ad-2e46-49a6-8252-d79b91096554" alt="Logo" /></td>  
  </tr>
   </table>
 </div>
